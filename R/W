@@ -1,0 +1,32 @@
+import thingspeak
+from time import localtime, strftime
+import psutil
+import time
+import Channel_ID
+import Write_KEY
+import Read_KEY
+
+def main():
+
+    channel_id = Channel_ID  # PUT CHANNEL ID HERE
+    write_key = Write_KEY  # PUT YOUR WRITE KEY HERE
+    read_key = Read_KEY #PUT YOUR READ KEY HERE
+
+    #cpu_pc = psutil.cpu_percent()
+    #mem_avail = psutil.virtual_memory().percent
+
+    channel = thingspeak.Channel(channel_id, write_key)
+
+    for i in range(10):
+        try:
+            #response = channel.update({1: cpu_pc, 2: mem_avail})
+            response = channel.update({1:i})
+            time.sleep(15)
+            #print(cpu_pc)
+            #print(mem_avail_mb)
+            #print(strftime("%a, %d %b %Y %H:%M:%S", localtime()))
+            print(response)
+        except:
+            print("connection failed")
+
+main()
