@@ -1,5 +1,7 @@
-/*
-  Contributors: Aura Teasley, Brandon Tiner and Levi Newton
+ /*
+  Device: UPRIGHT Furniture Monitoring System
+  
+  Creators: Aura Teasley, Brandon Tiner, Levi Newton
   
   Purpose: Alarm System using Thingspeak cloud to communicate motion detected
   from ESP32 SparkFun Thing to thingspeak cloud to be picked up by another device.
@@ -42,38 +44,34 @@ int number = 0;
 int i = 0;
 int j = 0;
 
-//Make trial for networks that don't require passwords
-
 WiFiClient  client;
 
 void setup() {
   Serial.begin(115200);  //Initialize serial
   WiFi.mode(WIFI_STA);   
   ThingSpeak.begin(client);  // Initialize ThingSpeak
+
+  Serial.println("Program will wait until network name is provided...");
+  Serial.print("Network Name: ");
   
-  //if you haven't input a number yet...wait
+  //Program will wait until network name is provided
   while(compareString == "")
   {
     //importing network name
     ssidString = Serial.readString();
     compareString = ssidString;
     }
-
-  //Serial.print("Input string is (Network name): ");               //SANITY CHECK
-  //Serial.println(ssidString);                                     //SANITY CHECK
   
+  Serial.print(ssidString);                                       //SANITY CHECK
   char ssid[ssidString.length()-1];
   for(int i = 0; i < ssidString.length()-1; i++)
   {
-    ssid[i] = ssidString.charAt(i);                              //SANITY CHECK
-    Serial.println(ssid[i]);
+    ssid[i] = ssidString.charAt(i);
     }
-  Serial.print("ssid is: ");
-  Serial.println(ssid);
-  Serial.print("The length of ssid[] is: ");
-  Serial.println(sizeof(ssid));
-  
-  //if next string read is still the same...wait
+
+  Serial.println("Program will wait until network password is provided...");
+  Serial.print("Network Password: ");
+  //Program will wait until 
   while(compareString == ssidString or compareString == "")
   {
     //importing network password
@@ -81,22 +79,16 @@ void setup() {
     compareString = passString;
     }
     
-  Serial.print("Input string is (Network password): ");         //SANITY CHECK
   Serial.println(passString);                                   //SANITY CHECK
+  
   char pass[passString.length()-1];
   for(int i = 0; i < passString.length()-1; i++)
   {
     pass[i] = passString.charAt(i);
-    Serial.println(pass[i]);
+    //Serial.println(pass[i]);
     }
-  
-  Serial.print("pass is: ");
-  Serial.println(pass);
-  Serial.print("The length of pass[] is: ");
-  Serial.println(sizeof(pass));
 
-  //now issue with wifi not engaging
-    // Connect or reconnect to WiFi
+  //Connection to WiFi
   if(WiFi.status() != WL_CONNECTED){
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssidString);
@@ -107,8 +99,11 @@ void setup() {
     } 
     Serial.println("\nConnected.");
   }
+
+  Serial.println("Program will wait until Channel ID is provided...");
+  Serial.print("Channel ID: ");
   
-  //if next string read is still the same
+  //Program will wait until channel id is provided
   while(compareInt == 0)
   {
     myChannelNumberString = Serial.readString();
@@ -116,11 +111,10 @@ void setup() {
     compareInt = myChannelNumberInt;
     }
 
-  Serial.print("Input string is (Channel Number): ");           //SANITY CHECK
-  Serial.println(myChannelNumberString);                        //SANITY CHECK
-
   Serial.println(myChannelNumberInt);                           //SANITY CHECK
 
+  Serial.println("Program will wait until Write API Key is provided...");
+  Serial.print("My Write API Key: ");
   //Acquring Write Key
   while(compareString == passString or compareString == "")
   {
@@ -128,32 +122,18 @@ void setup() {
     compareString = myWriteAPIKeyString;
     }
 
-  Serial.print("Input string is (Write Key): ");                //SANITY CHECK
-  Serial.println(myWriteAPIKeyString);                          //SANITY CHECK
   for(int i = 0; i < 17; i++)
   {
     myWriteAPIKey[i] = myWriteAPIKeyString.charAt(i);
     }
-
-  j = 0;
-  Serial.println("Printing myWriteAPIKey Pointer: ");
   Serial.println(myWriteAPIKeyPointer);
-  Serial.println("Printinng hopeful pointer contents: ");
-  while(j < 17)
-  {
-   Serial.print(j+1);                                           //SANITY CHECK
-   Serial.print(".) ");                                         //SANITY CHECK
-   Serial.println(hopefulPointer);                              //SANITY CHECK
-   hopefulPointer++;                                            //SANITY CHECK
-   j++;                                                         //SANITY CHECK  
-  }
+  
 }
 
 void loop() {
 
   // Write to ThingSpeak. There are up to 8 fields in a channel, allowing you to store up to 8 different
   // pieces of information in a channel.  Here, we write to field 1.
-  //int x = ThingSpeak.writeField(myChannelNumberInt, 1, number, myWriteAPIKey);
   int x = ThingSpeak.writeField(myChannelNumberInt, 1, number, myWriteAPIKeyPointer);
   if(x == 200){
     Serial.println("Channel update successful.");
@@ -163,6 +143,8 @@ void loop() {
   }
   
   delay(20000); // Wait 20 seconds to update the channel again
+  
+  //For DEMO, will change to after control system is installed
   if(number == 1)
     number = 0;
   else
