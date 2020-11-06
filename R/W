@@ -2,7 +2,9 @@
   Contributors: Aura Teasley, Brandon Tiner and Levi Newton
   
   Purpose: Alarm System using Thingspeak cloud to communicate motion detected
-  from ESP32 SparkFun Thing to thingspeak cloud to be picked up by another device
+  from ESP32 SparkFun Thing to thingspeak cloud to be picked up by another device.
+  User is allowed to input network name, network password, channel ID, channel Write Key
+  through serial monitor rather than hardcoded.
   
   Hardware: ESP32 based boards
   
