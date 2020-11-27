@@ -2,7 +2,9 @@
 /*
   Device: UPRIGHT Furniture Monitoring System
   
-  Creators: Levi Newton, Brandon Tiner, Aura Teasley
+  Creator: Aura Teasley
+  For: UpRights Device
+  Team: Brandon Tiner, Levi Newton, Aura Teasley
   
   Purpose: Alarm System using Thingspeak cloud to communicate motion detected
   from ESP32 SparkFun Thing to cloud to be picked up by another device (mobile app).
